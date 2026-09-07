@@ -1,0 +1,441 @@
+{
+  "studentListData": [
+    {
+      "id": "nguyen-minh-an",
+      "initials": "MA",
+      "name": "Nguyễn Minh An",
+      "code": "STU-2026-04821",
+      "school": "THPT Châu Văn Liêm",
+      "province": "Cần Thơ",
+      "major": "Trí tuệ nhân tạo",
+      "stage": "Tư vấn",
+      "score": 82,
+      "scoreDelta": 13,
+      "lastActivity": "4 phút trước",
+      "nextAction": "Gọi phụ huynh về học phí",
+      "owner": "Trần Quốc Bảo",
+      "revision": 4,
+      "source": "Career Talk 28/05",
+      "priority": "Cao"
+    },
+    {
+      "id": "tran-ngoc-bao-chau",
+      "initials": "BC",
+      "name": "Trần Ngọc Bảo Châu",
+      "code": "STU-2026-03914",
+      "school": "THPT Nguyễn Thị Minh Khai",
+      "province": "TP. Hồ Chí Minh",
+      "major": "Kinh doanh quốc tế",
+      "stage": "Tìm hiểu",
+      "score": 78,
+      "scoreDelta": 9,
+      "lastActivity": "28 phút trước",
+      "nextAction": "Gửi lộ trình học bổng",
+      "owner": "Lê Hoàng Nam",
+      "revision": 2,
+      "source": "Website tuyển sinh",
+      "priority": "Cao"
+    },
+    {
+      "id": "le-gia-huy",
+      "initials": "GH",
+      "name": "Lê Gia Huy",
+      "code": "STU-2026-05208",
+      "school": "THPT Kim Liên",
+      "province": "Hà Nội",
+      "major": "Kỹ thuật phần mềm",
+      "stage": "Ứng tuyển",
+      "score": 75,
+      "scoreDelta": 6,
+      "lastActivity": "1 giờ trước",
+      "nextAction": "Nhắc hoàn tất hồ sơ",
+      "owner": "Nguyễn Thu Hà",
+      "revision": 7,
+      "source": "Ngày hội tư vấn",
+      "priority": "Cao"
+    },
+    {
+      "id": "pham-khanh-linh",
+      "initials": "KL",
+      "name": "Phạm Khánh Linh",
+      "code": "STU-2026-04732",
+      "school": "THPT Việt Đức",
+      "province": "Hà Nội",
+      "major": "Truyền thông đa phương tiện",
+      "stage": "Tư vấn",
+      "score": 71,
+      "scoreDelta": 4,
+      "lastActivity": "3 giờ trước",
+      "nextAction": "Mời tham gia campus tour",
+      "owner": "Phạm Minh Khoa",
+      "revision": 1,
+      "source": "TikTok Ads",
+      "priority": "Trung bình"
+    },
+    {
+      "id": "vo-minh-khang",
+      "initials": "MK",
+      "name": "Võ Minh Khang",
+      "code": "STU-2026-04186",
+      "school": "THPT Lê Quý Đôn",
+      "province": "Đà Nẵng",
+      "major": "Thiết kế vi mạch",
+      "stage": "Quan tâm",
+      "score": 66,
+      "scoreDelta": 8,
+      "lastActivity": "Hôm qua",
+      "nextAction": "Phân loại nhu cầu ngành học",
+      "owner": "Đỗ Thanh Vân",
+      "revision": 3,
+      "source": "Landing page ngành học",
+      "priority": "Trung bình"
+    },
+    {
+      "id": "do-ngoc-mai",
+      "initials": "NM",
+      "name": "Đỗ Ngọc Mai",
+      "code": "STU-2026-03675",
+      "school": "THPT chuyên Lê Hồng Phong",
+      "province": "Nam Định",
+      "major": "Ngôn ngữ Anh",
+      "stage": "Tìm hiểu",
+      "score": 61,
+      "scoreDelta": 3,
+      "lastActivity": "Hôm qua",
+      "nextAction": "Chia sẻ trải nghiệm sinh viên",
+      "owner": "Trần Quốc Bảo",
+      "revision": 5,
+      "source": "Open Day Hà Nội",
+      "priority": "Trung bình"
+    },
+    {
+      "id": "nguyen-hoang-nam",
+      "initials": "HN",
+      "name": "Nguyễn Hoàng Nam",
+      "code": "STU-2026-02941",
+      "school": "THPT Nguyễn Bỉnh Khiêm",
+      "province": "Quảng Ninh",
+      "major": "Quản trị kinh doanh",
+      "stage": "Quan tâm",
+      "score": 54,
+      "scoreDelta": -2,
+      "lastActivity": "2 ngày trước",
+      "nextAction": "Kích hoạt lại điểm chạm",
+      "owner": "Lê Hoàng Nam",
+      "revision": 2,
+      "source": "Facebook Lead Ads",
+      "priority": "Thấp"
+    },
+    {
+      "id": "bui-thanh-ha",
+      "initials": "TH",
+      "name": "Bùi Thanh Hà",
+      "code": "STU-2026-02519",
+      "school": "THPT Phan Châu Trinh",
+      "province": "Đà Nẵng",
+      "major": "Kỹ thuật ô tô",
+      "stage": "Nhập học",
+      "score": 92,
+      "scoreDelta": 11,
+      "lastActivity": "2 ngày trước",
+      "nextAction": "Theo dõi xác nhận nhập học",
+      "owner": "Nguyễn Thu Hà",
+      "revision": 6,
+      "source": "Giới thiệu cựu sinh viên",
+      "priority": "Cao"
+    }
+  ],
+  "student360Data": {
+    "student": {
+      "initials": "MA",
+      "name": "Nguyễn Minh An",
+      "code": "STU-2026-04821",
+      "school": "THPT Châu Văn Liêm, Cần Thơ",
+      "grade": "Lớp 12 · ban A1",
+      "major": "Trí tuệ nhân tạo",
+      "phone": "09•• ••• 412",
+      "email": "a••••@gmail.com",
+      "province": "Cần Thơ",
+      "ward": "Phường An Cư",
+      "counselor": "Trần Quốc Bảo"
+    },
+    "readiness": [
+      {
+        "label": "Hồ sơ",
+        "value": 80,
+        "tone": "success",
+        "detail": "Đã xác thực thông tin cơ bản"
+      },
+      {
+        "label": "Gia đình",
+        "value": 64,
+        "tone": "warning",
+        "detail": "Cần tháo gỡ băn khoăn học phí"
+      },
+      {
+        "label": "Tương tác",
+        "value": 86,
+        "tone": "success",
+        "detail": "18 điểm chạm trong 30 ngày"
+      }
+    ],
+    "profile": [
+      {
+        "label": "Ngày sinh",
+        "value": "20/07/2007"
+      },
+      {
+        "label": "Giới tính",
+        "value": "Nữ"
+      },
+      {
+        "label": "Khu vực",
+        "value": "Ninh Kiều, Cần Thơ"
+      },
+      {
+        "label": "Nguồn",
+        "value": "Career Talk 28/05"
+      }
+    ],
+    "academics": [
+      {
+        "label": "GPA lớp 11",
+        "value": "8.7 / 10"
+      },
+      {
+        "label": "Tiếng Anh",
+        "value": "IELTS 6.5"
+      },
+      {
+        "label": "Điểm mạnh",
+        "value": "Toán, Tin học"
+      },
+      {
+        "label": "Sở thích",
+        "value": "AI, lập trình, robotics"
+      }
+    ],
+    "family": [
+      {
+        "label": "Người liên hệ chính",
+        "value": "Nguyễn Văn Minh · Bố"
+      },
+      {
+        "label": "Vai trò quyết định",
+        "value": "Người ra quyết định",
+        "emphasis": true
+      },
+      {
+        "label": "Mối quan tâm",
+        "value": "Học phí và phương án tài chính",
+        "emphasis": true
+      },
+      {
+        "label": "Kênh phù hợp",
+        "value": "Cuộc gọi 16:00–18:00"
+      }
+    ],
+    "classification": {
+      "dimensions": [
+        {
+          "id": "journey",
+          "label": "Giai đoạn hành trình",
+          "value": "Cân nhắc nghiêm túc",
+          "description": "Đã qua bước tìm hiểu và đang cần tháo gỡ điều kiện để mở hồ sơ.",
+          "evidence": [
+            "2 cuộc gọi tư vấn",
+            "Đã tham gia Open Day"
+          ],
+          "tone": "primary"
+        },
+        {
+          "id": "interest",
+          "label": "Mức độ quan tâm",
+          "value": "Cao",
+          "description": "Có nhiều tín hiệu chủ động và lặp lại trong 7 ngày gần nhất.",
+          "evidence": [
+            "Xem học phí 3 lần",
+            "Chủ động hỏi học bổng"
+          ],
+          "tone": "success"
+        },
+        {
+          "id": "fit",
+          "label": "Mức độ phù hợp",
+          "value": "Phù hợp cao",
+          "description": "Ngành, nền tảng học tập và phương thức xét tuyển đều khả thi.",
+          "evidence": [
+            "GPA 8.7 · Toán–Tin tốt",
+            "Ngành AI có trong danh mục"
+          ],
+          "tone": "sky"
+        },
+        {
+          "id": "barrier",
+          "label": "Rào cản chính",
+          "value": "Chi phí",
+          "description": "Gia đình cần phương án học phí và học bổng cụ thể trước khi quyết định.",
+          "evidence": [
+            "Bố hỏi học bổng",
+            "Chưa mở hồ sơ sau 21 ngày"
+          ],
+          "tone": "warning"
+        }
+      ],
+      "combination": "Quan tâm cao + Phù hợp cao + Rào cản chi phí",
+      "interpretation": "Nhóm có khả năng nhập học cao nhưng quyết định phụ thuộc phương án tài chính được phụ huynh chấp thuận.",
+      "action": "Liên hệ trong ngày, gửi bảng học phí và phương án học bổng trước cuộc gọi với bố.",
+      "updatedAt": "4 phút trước",
+      "updateTrigger": "Sau cuộc gọi tư vấn lần 2",
+      "reviewStatus": "Đã xác nhận",
+      "reviewedBy": "Trần Quốc Bảo"
+    },
+    "acquisition": {
+      "firstTouch": "Career Talk tại THPT Châu Văn Liêm",
+      "sourceGroup": "Thực địa",
+      "campaign": "AI Future 2026 · Cần Thơ",
+      "capturedAt": "28/05/2026 · 09:42",
+      "attributionModel": "Nguồn đầu tiên được ghi tại điểm thu",
+      "consent": "Đồng ý tư vấn tuyển sinh qua biểu mẫu sự kiện"
+    },
+    "segmentation": {
+      "learningStage": "Lớp 12 · học kỳ 2",
+      "approachGoal": "Hỗ trợ quyết định và mở hồ sơ",
+      "geographyTier": "Tỉnh lân cận",
+      "geographyImplication": "Cần làm rõ chi phí sinh hoạt, ký túc xá và di chuyển.",
+      "schoolTier": "Trường có lịch sử nhập học tốt",
+      "economicContext": "Gia đình chủ động chia sẻ cần phương án đóng học phí theo kỳ",
+      "economicUsage": "Chỉ dùng để tư vấn hỗ trợ, không dùng để giảm mức ưu tiên chăm sóc."
+    },
+    "parentProfile": {
+      "name": "Nguyễn Văn Minh",
+      "relation": "Bố",
+      "involvement": "Cao",
+      "role": "Người đồng quyết định chính",
+      "concerns": [
+        "Học phí theo học kỳ",
+        "Điều kiện học bổng 30%",
+        "Cơ hội việc làm sau tốt nghiệp"
+      ],
+      "preferredChannel": "Cuộc gọi",
+      "bestContactTime": "16:00–18:00",
+      "consentStatus": "Đã đồng ý nhận tư vấn",
+      "lastInteraction": "04/06/2026 · Zalo"
+    },
+    "insight": {
+      "summary": "Minh An có nền tảng học tập tốt, tín hiệu quan tâm AI tăng rõ rệt sau Open Day. Rào cản chính là học phí; bố là người ra quyết định và cần một phương án tài chính cụ thể.",
+      "signalScore": 82,
+      "probability": 82,
+      "scoreDelta": 13,
+      "baseline": 41,
+      "confidence": 76,
+      "concern": "Học phí & học bổng",
+      "decisionMaker": "Bố · người ra quyết định",
+      "evidence": [
+        "Xem trang học phí 3 lần · +14 điểm",
+        "Tham gia Open Day · +11 điểm",
+        "Phụ huynh hỏi về học bổng · +9 điểm",
+        "Đã có 2 cuộc gọi tư vấn · +7 điểm"
+      ],
+      "recommendation": "Gọi cho bố vào thứ Năm, gửi bảng học phí và phương án học bổng trước cuộc gọi."
+    },
+    "journey": [
+      {
+        "id": "talk",
+        "date": "28/05",
+        "title": "Career Talk",
+        "description": "Đăng ký nhận tư vấn ngành Trí tuệ nhân tạo",
+        "channel": "Sự kiện",
+        "status": "completed"
+      },
+      {
+        "id": "fee",
+        "date": "30/05",
+        "title": "Xem trang học phí",
+        "description": "Xem bảng học phí và chính sách học bổng 3 lần",
+        "channel": "Website",
+        "status": "completed"
+      },
+      {
+        "id": "open-day",
+        "date": "02/06",
+        "title": "Tham gia Open Day",
+        "description": "Check-in sự kiện và trao đổi với sinh viên AI",
+        "channel": "Sự kiện",
+        "status": "completed"
+      },
+      {
+        "id": "parent",
+        "date": "04/06",
+        "title": "Phụ huynh quan tâm học bổng",
+        "description": "Đặt câu hỏi về học phí và hỗ trợ tài chính",
+        "channel": "Zalo",
+        "status": "completed"
+      },
+      {
+        "id": "call",
+        "date": "06/06",
+        "title": "Tư vấn lần 2",
+        "description": "Đã xác nhận ngành phù hợp, còn băn khoăn về chi phí",
+        "channel": "Cuộc gọi",
+        "status": "completed"
+      },
+      {
+        "id": "next",
+        "date": "Thứ Năm",
+        "title": "Gọi cùng phụ huynh",
+        "description": "Gửi bảng phí, phương án học bổng và chốt bước hồ sơ",
+        "channel": "Cuộc gọi",
+        "status": "current"
+      }
+    ],
+    "engagement": [
+      {
+        "label": "Website & landing page",
+        "value": "22 lượt truy cập / 30 ngày",
+        "level": "Cao"
+      },
+      {
+        "label": "Sự kiện",
+        "value": "Open Day · đã tham gia",
+        "level": "Cao"
+      },
+      {
+        "label": "Email & Zalo",
+        "value": "Mở 5/6 nội dung gần nhất",
+        "level": "Cao"
+      },
+      {
+        "label": "Cuộc gọi",
+        "value": "2 cuộc gọi · phản hồi trong ngày",
+        "level": "Trung bình"
+      }
+    ],
+    "application": [
+      {
+        "label": "Nguyện vọng",
+        "value": "Kỹ sư Trí tuệ nhân tạo",
+        "status": "primary"
+      },
+      {
+        "label": "Kỳ tuyển sinh",
+        "value": "Đợt 2 · 2026"
+      },
+      {
+        "label": "Trạng thái hồ sơ",
+        "value": "Chưa bắt đầu · 0/5 tài liệu",
+        "status": "warning"
+      },
+      {
+        "label": "Học bổng",
+        "value": "Đề xuất mức 30%",
+        "status": "success"
+      },
+      {
+        "label": "Hạn hoàn tất",
+        "value": "Còn 12 ngày",
+        "status": "warning"
+      }
+    ]
+  }
+}
