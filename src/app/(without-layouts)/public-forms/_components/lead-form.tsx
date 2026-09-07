@@ -5,7 +5,6 @@ import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { Button } from "@/components/tailgrids/core/button";
 import { Input } from "@/components/tailgrids/core/input";
-import { TextArea } from "@/components/tailgrids/core/text-area";
 import { 
   createPublicLead, 
   getPublicProvinces, 
@@ -17,16 +16,14 @@ import type { CreatePublicLeadPayload, LookupItem } from "@/services/api/lead-ma
 import { Select, SelectItem, SelectTrigger, SelectValue, SelectIndicator, SelectContent } from "@/components/tailgrids/core/select";
 import { Label } from "@/components/tailgrids/core/label";
 
-interface LeadFormProps {
-  campaignCode: string;
-  campaignTitle: string;
+function getCampaignCodeFromUrl() {
+  return new URLSearchParams(window.location.search).get("code")?.trim() || "";
 }
 
-export function LeadForm({ campaignCode, campaignTitle }: LeadFormProps) {
+export function LeadForm() {
   const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState<Partial<CreatePublicLeadPayload>>({
-    campaign_code: campaignCode,
     student_name: "",
     phone: "",
     email: "",
@@ -59,29 +56,25 @@ export function LeadForm({ campaignCode, campaignTitle }: LeadFormProps) {
   }, []);
 
   useEffect(() => {
-    if (formData.province) {
-      getPublicWards(formData.province)
-        .then(setWards)
-        .catch((err) => {
-          console.error("Wards API error:", err);
-          toast.error("Lỗi khi tải danh sách Xã/Phường.");
-        });
-    } else {
-      setWards([]);
-    }
+    if (!formData.province) return;
+
+    getPublicWards(formData.province)
+      .then(setWards)
+      .catch((err) => {
+        console.error("Wards API error:", err);
+        toast.error("Lỗi khi tải danh sách Xã/Phường.");
+      });
   }, [formData.province]);
 
   useEffect(() => {
-    if (formData.ward) {
-      getPublicHighSchools(formData.ward)
-        .then(setHighSchools)
-        .catch((err) => {
-          console.error("High schools API error:", err);
-          toast.error("Lỗi khi tải danh sách Trường học.");
-        });
-    } else {
-      setHighSchools([]);
-    }
+    if (!formData.ward) return;
+
+    getPublicHighSchools(formData.ward)
+      .then(setHighSchools)
+      .catch((err) => {
+        console.error("High schools API error:", err);
+        toast.error("Lỗi khi tải danh sách Trường học.");
+      });
   }, [formData.ward]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -95,9 +88,12 @@ export function LeadForm({ campaignCode, campaignTitle }: LeadFormProps) {
       if (name === "province") {
         next.ward = "";
         next.high_school = "";
+        setWards([]);
+        setHighSchools([]);
       }
       if (name === "ward") {
         next.high_school = "";
+        setHighSchools([]);
       }
       return next;
     });
@@ -116,13 +112,22 @@ export function LeadForm({ campaignCode, campaignTitle }: LeadFormProps) {
       return;
     }
 
+    const campaignCode = getCampaignCodeFromUrl();
+    if (!campaignCode) {
+      toast.error("Không tìm thấy mã chiến dịch trong URL.");
+      return;
+    }
+
     setIsSubmitting(true);
     try {
-      await createPublicLead(formData as CreatePublicLeadPayload);
+      await createPublicLead({
+        ...formData,
+        campaign_code: campaignCode,
+      } as CreatePublicLeadPayload);
       toast.success("Đăng ký thành công!");
       router.push("/public-forms/success");
-    } catch (error: any) {
-      toast.error(error.message || "Có lỗi xảy ra khi gửi thông tin.");
+    } catch (error: unknown) {
+      toast.error(error instanceof Error ? error.message : "Có lỗi xảy ra khi gửi thông tin.");
       setIsSubmitting(false); // Only stop loading if error. On success, keep loading state until navigation completes.
     }
   };

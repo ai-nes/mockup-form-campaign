@@ -1,4 +1,4 @@
-import { ACTION_TIME_SLOTS, type ActionTimeSlot } from "@/services/api/nba-actions";
+import { ACTION_TIME_SLOTS, type ActionTimeSlot } from "@/services/api/api/nba-actions";
 
 import type {
   ActionChannel,

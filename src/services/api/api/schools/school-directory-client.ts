@@ -2,14 +2,14 @@ import {
   getSchools,
   type GetSchoolsParams,
   type SchoolListRecord,
-} from "@/services/api/student-school-update";
+} from "@/services/api/api/student-school-update";
 
 import type { SchoolDirectoryRecord } from "./types";
 
 export async function searchSchoolDirectory(
   query = "",
   limit = 20,
-  filters: Pick<GetSchoolsParams, "province" | "ward"> = {},
+  filters: Partial<Pick<GetSchoolsParams, "province" | "ward">> = {},
 ): Promise<SchoolDirectoryRecord[]> {
   const response = await getSchools({
     search: query.trim() || undefined,

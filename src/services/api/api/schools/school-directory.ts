@@ -3,8 +3,8 @@ import "server-only";
 import { readFile } from "node:fs/promises";
 import path from "node:path";
 
-import { getDirectorMarketIntelligence } from "@/services/api/market-intelligence";
-import type { MarketRegionKey } from "@/services/api/market-intelligence/types";
+import { getDirectorMarketIntelligence } from "@/services/api/api/market-intelligence";
+import type { MarketRegionKey } from "@/services/api/api/market-intelligence/types";
 
 import type {
   PrioritySchoolReport,

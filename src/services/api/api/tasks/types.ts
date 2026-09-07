@@ -1,4 +1,4 @@
-import type { StudentTaskItem } from "@/services/api/students/types";
+import type { StudentTaskItem } from "@/services/api/api/students/types";
 
 export interface TaskManagementItem extends StudentTaskItem {
   studentId: string;

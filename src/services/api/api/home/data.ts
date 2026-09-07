@@ -5,7 +5,7 @@ import type {
   TopProductsRawResponse,
   TrafficSourcesRawResponse,
 } from "./types";
-import type { SalesChartRawResponse } from "@/app/(with-layouts)/(dashboard)/(home)/_component/sales-chart/types";
+import type { SalesChartRawResponse } from "./types";
 
 export const homeOverviewStatsRawData: HomeOverviewStatsRawResponse = {
   dashboard_id: "",

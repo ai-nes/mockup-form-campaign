@@ -9,14 +9,22 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@base-ui/react": "^1.8.0",
+    "@floating-ui/react": "^0.27.20",
     "@tailgrids/icons": "^2.0.1",
+    "@tiptap/extension-placeholder": "^3.31.3",
+    "@tiptap/react": "^3.31.3",
+    "@tiptap/starter-kit": "^3.31.3",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
+    "embla-carousel-react": "^8.6.0",
     "lucide-react": "^1.42.0",
     "next": "16.3.4",
     "react": "19.2.8",
     "react-aria-components": "^1.21.1",
     "react-dom": "19.2.8",
+    "react-resizable-panels": "^4.12.4",
+    "recharts": "^3.10.1",
     "sonner": "^2.0.8",
     "tailwind-merge": "^3.6.0"
   },
@@ -30,6 +38,7 @@
     "eslint-config-next": "16.3.4",
     "tailwind-scrollbar": "^4.0.2",
     "tailwindcss": "^4",
-    "typescript": "^5"
+    "typescript": "^5",
+    "vitest": "^2.1.9"
   }
 }

@@ -43,7 +43,7 @@ export default function PublicFormsSelectorPage() {
           {DEMO_CAMPAIGNS.map((campaign) => (
             <Link
               key={campaign.code}
-              href={`/public-forms/${campaign.code}`}
+              href={`/?code=${encodeURIComponent(campaign.code)}`}
               className="group flex flex-col p-6 rounded-2xl border border-card-border bg-background-white hover:border-primary-500 hover:shadow-lg transition-all"
             >
               <div className="flex justify-between items-start mb-4">

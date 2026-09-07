@@ -1,4 +1,4 @@
-import type { ActionTimeSlot } from "@/services/api/nba-actions";
+import type { ActionTimeSlot } from "@/services/api/api/nba-actions";
 
 export type ActionChannel = "NONE" | "CALL" | "EMAIL" | "MESSAGE";
 export type RuleStatus = "draft" | "published" | "archived";

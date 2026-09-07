@@ -1,5 +1,6 @@
 import Link from "next/link";
-import { Button } from "@/components/tailgrids/core/button";
+import { buttonStyles } from "@/components/tailgrids/core/button-styles";
+import { cn } from "@/utils/cn";
 
 export default function SuccessPage() {
   return (
@@ -18,11 +19,15 @@ export default function SuccessPage() {
         </p>
 
         <div className="mt-4 pt-6 border-t border-card-border w-full">
-          <Button asChild variant="primary" appearance="outline" className="w-full">
-            <Link href="/public-forms">
-              Quay lại trang chiến dịch
-            </Link>
-          </Button>
+          <Link
+            href="/public-forms"
+            className={cn(
+              buttonStyles({ variant: "primary", appearance: "outline" }),
+              "w-full",
+            )}
+          >
+            Quay lại trang chiến dịch
+          </Link>
         </div>
       </div>
     </div>
