@@ -12,7 +12,6 @@ import {
   TableCell,
 } from "@/components/tailgrids/core/table";
 import { Badge } from "@/components/tailgrids/core/badge";
-import { MOCK_INITIAL_LEADS } from "@/services/api/lead-mapping/mock-leads";
 
 interface LeadTableProps {
   campaignCode?: string;
@@ -57,9 +56,9 @@ function SortIcon({ dir }: { dir: TimeSortDir | null }) {
 }
 
 export function LeadTable({ campaignCode, pendingLead, refreshKey = 0 }: LeadTableProps) {
-  const [leads, setLeads] = useState<PublicLeadRecord[]>(MOCK_INITIAL_LEADS);
+  const [leads, setLeads] = useState<PublicLeadRecord[]>([]);
   const [loading, setLoading] = useState(false);
-  const [hasFetched, setHasFetched] = useState(true);
+  const [hasFetched, setHasFetched] = useState(false);
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -73,13 +72,13 @@ export function LeadTable({ campaignCode, pendingLead, refreshKey = 0 }: LeadTab
     setLoading(true);
     try {
       const data = await getPublicLeads(campaignCode);
-      if (Array.isArray(data) && data.length > 0) {
+      if (Array.isArray(data)) {
         setLeads(data);
       } else {
-        setLeads((prev) => (prev.length > 0 ? prev : MOCK_INITIAL_LEADS));
+        setLeads([]);
       }
     } catch {
-      setLeads((prev) => (prev.length > 0 ? prev : MOCK_INITIAL_LEADS));
+      setLeads([]);
     } finally {
       setLoading(false);
       setHasFetched(true);
@@ -224,25 +223,29 @@ export function LeadTable({ campaignCode, pendingLead, refreshKey = 0 }: LeadTab
               ))
             ) : isEmpty ? (
               <TableRow>
-                <TableCell colSpan={11} className="text-center py-12 text-text-secondary whitespace-nowrap">
-                  <div className="flex flex-col items-center gap-3">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="36"
-                      height="36"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="1.5"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      className="opacity-30"
-                    >
-                      <rect width="18" height="18" x="3" y="3" rx="2" />
-                      <path d="M3 9h18" />
-                      <path d="M9 21V9" />
-                    </svg>
-                    <span className="text-xs">Chưa có dữ liệu học sinh đăng ký</span>
+                <TableCell colSpan={11} className="text-center py-16 text-text-secondary whitespace-nowrap">
+                  <div className="flex flex-col items-center gap-2.5 max-w-sm mx-auto">
+                    <div className="size-12 rounded-full bg-background-gray-primary border border-border-primary/60 flex items-center justify-center text-text-secondary/60">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="22"
+                        height="22"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="1.5"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      >
+                        <rect width="18" height="18" x="3" y="3" rx="2" />
+                        <path d="M3 9h18" />
+                        <path d="M9 21V9" />
+                      </svg>
+                    </div>
+                    <span className="text-xs font-semibold text-text-primary">Chưa có dữ liệu học sinh đăng ký</span>
+                    <span className="text-[11px] text-text-secondary">
+                      Chưa có lượt đăng ký nào cho chiến dịch này hoặc máy chủ chưa trả về dữ liệu.
+                    </span>
                   </div>
                 </TableCell>
               </TableRow>

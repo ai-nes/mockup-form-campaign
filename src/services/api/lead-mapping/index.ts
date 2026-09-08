@@ -287,15 +287,17 @@ export async function getPublicLeads(
 }
 
 export async function getPublicCampaigns(
+  campaignCode?: string,
   options: RequestOptions = {},
-): Promise<any[]> {
+): Promise<import("./types").PublicCampaignRecord[]> {
   try {
     const baseUrl = resolveBaseUrl(options);
-    const url = `${baseUrl}/api/method/crm.api.campaign.get_public_campaigns`;
+    const query = campaignCode ? `?campaign_code=${encodeURIComponent(campaignCode)}` : "";
+    const url = `${baseUrl}/api/method/crm.api.campaign.get_public_campaigns${query}`;
     const response = await fetch(url, { method: "GET", credentials: "omit", signal: options.signal });
     if (!response.ok) return [];
     const data = await response.json();
-    return data?.message?.campaigns || [];
+    return (data?.message?.campaigns || data?.message?.items || data?.message || []) as import("./types").PublicCampaignRecord[];
   } catch {
     return [];
   }

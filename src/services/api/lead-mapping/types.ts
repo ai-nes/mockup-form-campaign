@@ -76,3 +76,25 @@ export interface PublicLeadRecord {
   campaign_code?: string;
   [key: string]: any;
 }
+
+export interface PublicCampaignRecord {
+  name: string;
+  stable_code?: string;
+  code?: string;
+  title?: string;
+  campus?: string;
+  campaign_type?: string;
+  event_type?: string;
+  status?: string;
+  start_date?: string;
+  end_date?: string;
+  platform?: string;
+  channel_boundary?: string;
+  channel_type?: string;
+  channel_url?: string;
+  utm_source?: string;
+  utm_medium?: string;
+  utm_campaign?: string;
+  description?: string;
+  [key: string]: any;
+}
