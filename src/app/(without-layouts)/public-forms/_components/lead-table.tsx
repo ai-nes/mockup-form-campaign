@@ -183,6 +183,15 @@ export function LeadTable({ campaignCode, pendingLead, refreshKey = 0 }: LeadTab
                 Email
               </TableHead>
               <TableHead className="px-3.5 py-3 text-text-secondary uppercase tracking-wider text-[11px] whitespace-nowrap bg-background-gray-primary">
+                Tỉnh / Thành phố
+              </TableHead>
+              <TableHead className="px-3.5 py-3 text-text-secondary uppercase tracking-wider text-[11px] whitespace-nowrap bg-background-gray-primary">
+                Quận / Huyện / Xã
+              </TableHead>
+              <TableHead className="px-3.5 py-3 text-text-secondary uppercase tracking-wider text-[11px] whitespace-nowrap bg-background-gray-primary">
+                Trường THPT
+              </TableHead>
+              <TableHead className="px-3.5 py-3 text-text-secondary uppercase tracking-wider text-[11px] whitespace-nowrap bg-background-gray-primary">
                 Ngành quan tâm
               </TableHead>
               <TableHead className="px-3.5 py-3 text-text-secondary uppercase tracking-wider text-[11px] whitespace-nowrap bg-background-gray-primary">
@@ -206,7 +215,7 @@ export function LeadTable({ campaignCode, pendingLead, refreshKey = 0 }: LeadTab
             {loading && !hasFetched ? (
               Array.from({ length: 4 }).map((_, i) => (
                 <TableRow key={`skeleton-${i}`}>
-                  {Array.from({ length: 8 }).map((_, j) => (
+                  {Array.from({ length: 11 }).map((_, j) => (
                     <TableCell key={j} className="px-3.5 py-3 whitespace-nowrap">
                       <div className="h-3.5 bg-border-primary/50 rounded animate-pulse" style={{ width: `${60 + Math.random() * 30}%` }} />
                     </TableCell>
@@ -215,7 +224,7 @@ export function LeadTable({ campaignCode, pendingLead, refreshKey = 0 }: LeadTab
               ))
             ) : isEmpty ? (
               <TableRow>
-                <TableCell colSpan={8} className="text-center py-12 text-text-secondary whitespace-nowrap">
+                <TableCell colSpan={11} className="text-center py-12 text-text-secondary whitespace-nowrap">
                   <div className="flex flex-col items-center gap-3">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -254,6 +263,15 @@ export function LeadTable({ campaignCode, pendingLead, refreshKey = 0 }: LeadTab
                   </TableCell>
                   <TableCell className="px-3.5 py-3 text-xs text-text-secondary whitespace-nowrap">
                     {lead.email || "—"}
+                  </TableCell>
+                  <TableCell className="px-3.5 py-3 text-xs text-text-secondary whitespace-nowrap truncate max-w-[150px]" title={lead.province}>
+                    {lead.province || "—"}
+                  </TableCell>
+                  <TableCell className="px-3.5 py-3 text-xs text-text-secondary whitespace-nowrap truncate max-w-[150px]" title={lead.ward}>
+                    {lead.ward || "—"}
+                  </TableCell>
+                  <TableCell className="px-3.5 py-3 text-xs text-text-primary font-medium whitespace-nowrap truncate max-w-[180px]" title={lead.high_school}>
+                    {lead.high_school || "—"}
                   </TableCell>
                   <TableCell className="px-3.5 py-3 whitespace-nowrap">
                     {lead.major ? (
