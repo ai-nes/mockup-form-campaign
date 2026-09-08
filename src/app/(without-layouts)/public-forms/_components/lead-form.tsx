@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { Button } from "@/components/tailgrids/core/button";
 import { Input } from "@/components/tailgrids/core/input";
@@ -12,16 +11,17 @@ import {
   getPublicHighSchools, 
   getPublicMajors 
 } from "@/services/api/lead-mapping";
-import type { CreatePublicLeadPayload, LookupItem } from "@/services/api/lead-mapping";
+import type { CreatePublicLeadPayload, LookupItem, PublicLeadRecord } from "@/services/api/lead-mapping";
 import { Select, SelectItem, SelectTrigger, SelectValue, SelectIndicator, SelectContent } from "@/components/tailgrids/core/select";
 import { Label } from "@/components/tailgrids/core/label";
 
-function getCampaignCodeFromUrl() {
-  return new URLSearchParams(window.location.search).get("code")?.trim() || "";
+interface LeadFormProps {
+  /** Called after a lead is successfully created, passing the submitted data */
+  onLeadCreated?: (lead: PublicLeadRecord) => void;
+  campaignCode?: string;
 }
 
-export function LeadForm() {
-  const router = useRouter();
+export function LeadForm({ onLeadCreated, campaignCode }: LeadFormProps = {}) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState<Partial<CreatePublicLeadPayload>>({
     student_name: "",
@@ -112,43 +112,96 @@ export function LeadForm() {
       return;
     }
 
-    const campaignCode = getCampaignCodeFromUrl();
-    if (!campaignCode) {
-      toast.error("Không tìm thấy mã chiến dịch trong URL.");
-      return;
-    }
+    const currentCampaignCode = campaignCode || "CAM-2026-00001";
 
     setIsSubmitting(true);
     try {
-      await createPublicLead({
-        ...formData,
-        campaign_code: campaignCode,
+      // Omit server-managed fields like lead_status from creation payload
+      const { lead_status, ...payloadFields } = formData;
+      const result = await createPublicLead({
+        ...payloadFields,
+        campaign_code: currentCampaignCode,
       } as CreatePublicLeadPayload);
       toast.success("Đăng ký thành công!");
-      router.push("/public-forms/success");
+
+      // Find friendly labels for display in table
+      const selectedProvince = provinces.find((p) => (p.code || p.value) === formData.province)?.label || formData.province;
+      const selectedWard = wards.find((w) => (w.code || w.value) === formData.ward)?.label || formData.ward;
+      const selectedSchool = highSchools.find((s) => (s.code || s.value) === formData.high_school)?.label || formData.high_school;
+      const selectedMajor = majors.find((m) => (m.code || m.value) === formData.major)?.label || formData.major;
+
+      // Build the record for the table
+      const newLead: PublicLeadRecord = {
+        student_name: formData.student_name || "",
+        campaign: currentCampaignCode,
+        lead_status: "New",
+        lead_code: result?.lead_code || result?.leadCode || `HS-2026-${Date.now().toString().slice(-6)}`,
+        name: result?.name || result?.lead_code || `HS-2026-${Date.now().toString().slice(-6)}`,
+        creation: new Date().toISOString().replace("T", " ").slice(0, 19),
+        createdAt: new Date().toISOString(),
+        phone: formData.phone,
+        email: formData.email,
+        province: selectedProvince,
+        ward: selectedWard,
+        high_school: selectedSchool,
+        major: selectedMajor,
+      };
+      onLeadCreated?.(newLead);
+
+      // Reset form
+      setFormData({
+        student_name: "",
+        phone: "",
+        email: "",
+        province: "",
+        ward: "",
+        high_school: "",
+        major: "",
+        source: "Promoter",
+        assignment_priority: "normal",
+        segments: ["Scholarship", "Grade 12"],
+      });
+      setWards([]);
+      setHighSchools([]);
     } catch (error: unknown) {
       toast.error(error instanceof Error ? error.message : "Có lỗi xảy ra khi gửi thông tin.");
-      setIsSubmitting(false); // Only stop loading if error. On success, keep loading state until navigation completes.
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col gap-6">
+    <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+      {/* Form Header */}
+      <div className="flex items-center gap-2.5 pb-3 border-b border-border-primary/60">
+        <div className="size-7 rounded-lg bg-orange-500/10 text-orange-600 flex items-center justify-center font-bold text-xs">
+          ✦
+        </div>
+        <div>
+          <h2 className="text-sm font-bold text-text-primary">Thông tin đăng ký</h2>
+          <p className="text-[11px] text-text-secondary">Nhập đầy đủ thông tin bên dưới để được tư vấn</p>
+        </div>
+      </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div className="flex flex-col gap-2">
-          <Label>Họ và Tên <span className="text-red-500">*</span></Label>
+      {/* Row 1: Họ và Tên & Số điện thoại */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+        <div className="flex flex-col gap-1.5">
+          <Label className="text-xs font-medium text-text-primary">
+            Họ và Tên <span className="text-red-500">*</span>
+          </Label>
           <Input
             name="student_name"
             aria-label="Họ và Tên"
-            placeholder="Nhập họ và tên học sinh"
+            placeholder="Nhập họ và tên"
             value={formData.student_name}
             onChange={handleChange}
             required
           />
         </div>
-        <div className="flex flex-col gap-2">
-          <Label>Số điện thoại <span className="text-red-500">*</span></Label>
+        <div className="flex flex-col gap-1.5">
+          <Label className="text-xs font-medium text-text-primary">
+            Số điện thoại <span className="text-red-500">*</span>
+          </Label>
           <Input
             name="phone"
             aria-label="Số điện thoại"
@@ -161,26 +214,26 @@ export function LeadForm() {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 gap-6">
-        <div className="flex flex-col gap-2">
-          <Label>Email</Label>
-          <Input
-            name="email"
-            aria-label="Email"
-            type="email"
-            placeholder="example@domain.com"
-            value={formData.email}
-            onChange={handleChange}
-          />
-        </div>
+      {/* Row 2: Email */}
+      <div className="flex flex-col gap-1.5">
+        <Label className="text-xs font-medium text-text-primary">Email</Label>
+        <Input
+          name="email"
+          aria-label="Email"
+          type="email"
+          placeholder="example@domain.com"
+          value={formData.email}
+          onChange={handleChange}
+        />
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div className="flex flex-col gap-2">
-          <Label>Tỉnh/Thành phố</Label>
+      {/* Row 3: Tỉnh/Thành phố & Xã/Phường/Quận/Huyện */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+        <div className="flex flex-col gap-1.5">
+          <Label className="text-xs font-medium text-text-primary">Tỉnh/Thành phố</Label>
           <Select
             aria-label="Tỉnh/Thành phố"
-            placeholder="Chọn tỉnh/thành phố"
+            placeholder="Chọn Tỉnh/Thành phố"
             value={formData.province || ""}
             onChange={(key) => handleSelectChange("province", key as string)}
           >
@@ -197,8 +250,8 @@ export function LeadForm() {
             </SelectContent>
           </Select>
         </div>
-        <div className="flex flex-col gap-2">
-          <Label>Xã/Phường/Quận/Huyện</Label>
+        <div className="flex flex-col gap-1.5">
+          <Label className="text-xs font-medium text-text-primary">Xã/Phường/Quận/Huyện</Label>
           <Select
             aria-label="Xã Phường Quận Huyện"
             placeholder="Chọn Quận/Huyện"
@@ -220,11 +273,12 @@ export function LeadForm() {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div className="flex flex-col gap-2">
-          <Label>Trường học</Label>
+      {/* Row 4: Trường học & Ngành học */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+        <div className="flex flex-col gap-1.5">
+          <Label className="text-xs font-medium text-text-primary">Trường THPT</Label>
           <Select
-            aria-label="Trường học"
+            aria-label="Trường THPT"
             placeholder="Chọn Trường THPT"
             value={formData.high_school || ""}
             onChange={(key) => handleSelectChange("high_school", key as string)}
@@ -242,8 +296,8 @@ export function LeadForm() {
             </SelectContent>
           </Select>
         </div>
-        <div className="flex flex-col gap-2">
-          <Label>Ngành học quan tâm</Label>
+        <div className="flex flex-col gap-1.5">
+          <Label className="text-xs font-medium text-text-primary">Ngành quan tâm</Label>
           <Select
             aria-label="Ngành học quan tâm"
             placeholder="Chọn Ngành học"
@@ -265,9 +319,15 @@ export function LeadForm() {
         </div>
       </div>
 
-      <Button type="submit" isLoading={isSubmitting} className="w-full">
+      {/* Submit Button */}
+      <Button
+        type="submit"
+        isLoading={isSubmitting}
+        className="w-full mt-2 font-semibold shadow-sm transition-all hover:opacity-95"
+      >
         Gửi thông tin đăng ký
       </Button>
     </form>
   );
 }
+

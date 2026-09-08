@@ -1,4 +1,5 @@
-import { notFound, redirect } from "next/navigation";
+import { notFound } from "next/navigation";
+import { PublicFormPage } from "../_components/public-form-page";
 
 const DEMO_CAMPAIGNS = [
   {
@@ -37,5 +38,5 @@ export default async function SingleCampaignFormPage({ params }: PageProps) {
     notFound();
   }
 
-  redirect(`/?code=${encodeURIComponent(selectedCampaign.code)}`);
+  return <PublicFormPage campaignCode={selectedCampaign.code} />;
 }

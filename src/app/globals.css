@@ -593,3 +593,28 @@
     width: auto !important;
   }
 }
+
+/* ======== Lead Table Custom Scrollbar =========*/
+/* Applied on the wrapper div so the table scrollbar looks styled */
+.lead-table-scroll::-webkit-scrollbar {
+  height: 6px;
+  width: 6px;
+}
+.lead-table-scroll::-webkit-scrollbar-track {
+  background: transparent;
+  border-radius: 99px;
+  margin-left: 12px;
+  margin-right: 12px;
+}
+.lead-table-scroll::-webkit-scrollbar-thumb {
+  background: var(--border-primary);
+  border-radius: 99px;
+  transition: background 0.2s ease;
+}
+.lead-table-scroll::-webkit-scrollbar-thumb:hover {
+  background: var(--text-secondary);
+}
+.lead-table-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: var(--border-primary) transparent;
+}

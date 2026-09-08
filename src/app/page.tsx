@@ -1,5 +1,5 @@
-import { PublicFormPage } from "./(without-layouts)/public-forms/_components/public-form-page";
+import PublicFormsSelectorPage from "./(without-layouts)/public-forms/page";
 
 export default function HomePage() {
-  return <PublicFormPage />;
+  return <PublicFormsSelectorPage />;
 }

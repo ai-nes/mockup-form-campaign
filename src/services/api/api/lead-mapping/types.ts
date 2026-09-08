@@ -15,6 +15,7 @@ export interface CreatePublicLeadPayload {
   high_school?: string;
   major?: string;
   source?: string;
+  lead_status?: string;
   assignment_priority?: "low" | "normal" | "high" | "urgent";
   segments?: string[];
 }
@@ -54,4 +55,24 @@ export interface LookupItem {
 export interface LookupResponse {
   items: LookupItem[];
   total: number;
+}
+
+export interface PublicLeadRecord {
+  name?: string;
+  lead_code?: string;
+  student_name?: string;
+  lead_status?: string | null;
+  campaign?: string;
+  creation?: string;
+  createdAt?: string; // Client fallback
+  
+  // Sensitive fields removed from API response, kept optional for local pending lead
+  phone?: string;
+  email?: string;
+  province?: string;
+  ward?: string;
+  high_school?: string;
+  major?: string;
+  campaign_code?: string;
+  [key: string]: any;
 }

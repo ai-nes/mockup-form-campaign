@@ -17,11 +17,14 @@ const tableRootStyles = cva(
   },
 );
 
-type TableRootProps = ComponentProps<"table"> & VariantProps<typeof tableRootStyles>;
+type TableRootProps = ComponentProps<"table"> &
+  VariantProps<typeof tableRootStyles> & {
+    containerClassName?: string;
+  };
 
-export function TableRoot({ className, fullBleed, ...props }: TableRootProps) {
+export function TableRoot({ className, fullBleed, containerClassName, ...props }: TableRootProps) {
   return (
-    <div className="overflow-x-auto">
+    <div className={cn("overflow-x-auto lead-table-scroll", containerClassName)}>
       <table className={cn(tableRootStyles({ fullBleed }), className)} {...props} />
     </div>
   );
