@@ -125,10 +125,10 @@ export function LeadForm({ onLeadCreated, campaignCode }: LeadFormProps = {}) {
       toast.success("Đăng ký thành công!");
 
       // Find friendly labels for display in table
-      const selectedProvince = provinces.find((p) => (p.code || p.value) === formData.province)?.label || formData.province;
-      const selectedWard = wards.find((w) => (w.code || w.value) === formData.ward)?.label || formData.ward;
-      const selectedSchool = highSchools.find((s) => (s.code || s.value) === formData.high_school)?.label || formData.high_school;
-      const selectedMajor = majors.find((m) => (m.code || m.value) === formData.major)?.label || formData.major;
+      const selectedProvince = provinces.find((p) => p.value === formData.province)?.label || formData.province;
+      const selectedWard = wards.find((w) => w.value === formData.ward)?.label || formData.ward;
+      const selectedSchool = highSchools.find((s) => s.value === formData.high_school)?.label || formData.high_school;
+      const selectedMajor = majors.find((m) => m.value === formData.major)?.label || formData.major;
 
       // Build the record for the table
       const newLead: PublicLeadRecord = {
@@ -243,7 +243,7 @@ export function LeadForm({ onLeadCreated, campaignCode }: LeadFormProps = {}) {
             </SelectTrigger>
             <SelectContent>
               {provinces.map((p) => (
-                <SelectItem key={p.code || p.value} id={p.code || p.value} textValue={p.label}>
+                <SelectItem key={p.value} id={p.value} textValue={p.label}>
                   {p.label}
                 </SelectItem>
               ))}
@@ -264,7 +264,7 @@ export function LeadForm({ onLeadCreated, campaignCode }: LeadFormProps = {}) {
             </SelectTrigger>
             <SelectContent>
               {wards.map((w) => (
-                <SelectItem key={w.code || w.value} id={w.code || w.value} textValue={w.label}>
+                <SelectItem key={w.value} id={w.value} textValue={w.label}>
                   {w.label}
                 </SelectItem>
               ))}
@@ -289,7 +289,7 @@ export function LeadForm({ onLeadCreated, campaignCode }: LeadFormProps = {}) {
             </SelectTrigger>
             <SelectContent>
               {highSchools.map((hs) => (
-                <SelectItem key={hs.code || hs.value} id={hs.code || hs.value} textValue={hs.label}>
+                <SelectItem key={hs.value} id={hs.value} textValue={hs.label}>
                   {hs.label}
                 </SelectItem>
               ))}
@@ -310,7 +310,7 @@ export function LeadForm({ onLeadCreated, campaignCode }: LeadFormProps = {}) {
             </SelectTrigger>
             <SelectContent>
               {majors.map((m) => (
-                <SelectItem key={m.code || m.value} id={m.code || m.value} textValue={m.label}>
+                <SelectItem key={m.value} id={m.value} textValue={m.label}>
                   {m.label}
                 </SelectItem>
               ))}
