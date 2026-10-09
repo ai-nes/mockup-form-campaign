@@ -1,7 +1,6 @@
 "use client";
 
-import { useEffect, useState, useCallback, useMemo } from "react";
-import { getPublicLeads } from "@/services/api/lead-mapping";
+import { useEffect, useState, useMemo } from "react";
 import type { PublicLeadRecord } from "@/services/api/lead-mapping";
 import {
   TableRoot,
@@ -14,9 +13,7 @@ import {
 import { Badge } from "@/components/tailgrids/core/badge";
 
 interface LeadTableProps {
-  campaignCode?: string;
   pendingLead?: PublicLeadRecord | null;
-  refreshKey?: number;
 }
 
 type TimeSortDir = "desc" | "asc";
@@ -55,10 +52,8 @@ function SortIcon({ dir }: { dir: TimeSortDir | null }) {
   );
 }
 
-export function LeadTable({ campaignCode, pendingLead, refreshKey = 0 }: LeadTableProps) {
+export function LeadTable({ pendingLead }: LeadTableProps) {
   const [leads, setLeads] = useState<PublicLeadRecord[]>([]);
-  const [loading, setLoading] = useState(false);
-  const [hasFetched, setHasFetched] = useState(false);
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -67,27 +62,6 @@ export function LeadTable({ campaignCode, pendingLead, refreshKey = 0 }: LeadTab
 
   // Sort state
   const [timeSortDir, setTimeSortDir] = useState<TimeSortDir>("desc");
-
-  const fetchLeads = useCallback(async () => {
-    setLoading(true);
-    try {
-      const data = await getPublicLeads(campaignCode);
-      if (Array.isArray(data)) {
-        setLeads(data);
-      } else {
-        setLeads([]);
-      }
-    } catch {
-      setLeads([]);
-    } finally {
-      setLoading(false);
-      setHasFetched(true);
-    }
-  }, [campaignCode]);
-
-  useEffect(() => {
-    fetchLeads();
-  }, [fetchLeads, refreshKey]);
 
   useEffect(() => {
     if (!pendingLead) return;
@@ -129,40 +103,10 @@ export function LeadTable({ campaignCode, pendingLead, refreshKey = 0 }: LeadTab
         <div>
           <h2 className="text-base font-semibold text-text-primary whitespace-nowrap">Danh sách học sinh đăng ký</h2>
           <p className="text-xs text-text-secondary mt-0.5 whitespace-nowrap">
-            {hasFetched && !loading
-              ? `${displayLeads.length} / ${leads.length} học sinh`
-              : "Đang tải…"}
+            {`${displayLeads.length} học sinh vừa đăng ký trên thiết bị này`}
           </p>
         </div>
 
-        <div className="flex items-center gap-3">
-          {/* Refresh button */}
-          <button
-            onClick={fetchLeads}
-            disabled={loading}
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium border border-border-primary text-text-secondary hover:bg-background-gray-primary transition-colors disabled:opacity-50 cursor-pointer whitespace-nowrap"
-            aria-label="Làm mới danh sách"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="13"
-              height="13"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              className={loading ? "animate-spin" : ""}
-            >
-              <path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8" />
-              <path d="M21 3v5h-5" />
-              <path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16" />
-              <path d="M3 21v-5h5" />
-            </svg>
-            Làm mới
-          </button>
-        </div>
       </div>
 
       <div className="w-full overflow-hidden rounded-xl border border-border-primary bg-background-white shadow-xs">
@@ -211,17 +155,7 @@ export function LeadTable({ campaignCode, pendingLead, refreshKey = 0 }: LeadTab
           </TableHeader>
 
           <TableBody>
-            {loading && !hasFetched ? (
-              Array.from({ length: 4 }).map((_, i) => (
-                <TableRow key={`skeleton-${i}`}>
-                  {Array.from({ length: 11 }).map((_, j) => (
-                    <TableCell key={j} className="px-3.5 py-3 whitespace-nowrap">
-                      <div className="h-3.5 bg-border-primary/50 rounded animate-pulse" style={{ width: `${60 + Math.random() * 30}%` }} />
-                    </TableCell>
-                  ))}
-                </TableRow>
-              ))
-            ) : isEmpty ? (
+            {isEmpty ? (
               <TableRow>
                 <TableCell colSpan={11} className="text-center py-16 text-text-secondary whitespace-nowrap">
                   <div className="flex flex-col items-center gap-2.5 max-w-sm mx-auto">

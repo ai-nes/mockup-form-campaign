@@ -4,10 +4,10 @@ Dự án này là hệ thống Public Form chuyên dụng phục vụ việc thu
 
 ## 🚀 Tính năng nổi bật
 
-- **Form Tuyển sinh (`/public-forms`)**: Giao diện đẹp, mượt mà, hỗ trợ đổ dữ liệu Tỉnh/Thành, Quận/Huyện, Trường học tự động từ Backend Frappe.
-- **Tích hợp API Trực tiếp (Lead Mapping)**: Kết nối thẳng với Backend Frappe qua các endpoint `get_public_provinces`, `create_public_lead`... không cần xác thực (Guest allow).
-- **Chống trùng lặp (Duplicate Validation)**: Nhận diện mã lỗi `417 Expectation Failed` từ Frappe và hiển thị thông báo lỗi thân thiện ("Bạn đã đăng ký tham gia chiến dịch này rồi...") thay vì lỗi kỹ thuật.
-- **Fix CORS Triệt để**: Sử dụng cơ chế Proxy Rewrites của Next.js để gọi API nội bộ, hoàn toàn loại bỏ nỗi lo bị trình duyệt chặn CORS.
+- **Form Tuyển sinh (`/public-forms`)**: Giao diện đẹp, mượt mà, hỗ trợ đổ dữ liệu Tỉnh/Thành, Quận/Huyện, Trường học tự động từ crm-backend.
+- **Tích hợp crm-backend**: Dùng các endpoint khách (không cần đăng nhập) `GET /api/v1/public/{provinces,wards,high-schools,majors,campaigns}` và `POST /api/v1/leads/intake`.
+- **Gửi lại an toàn**: Mỗi lượt gửi mang `Idempotency-Key`; backend giới hạn tần suất theo IP và báo lỗi bằng thông điệp tiếng Việt.
+- **Không CORS**: Trình duyệt chỉ gọi `/api/backend/...` cùng origin, route handler chuyển tiếp sang crm-backend.
 - **UI Components Chuẩn**: Kế thừa trọn bộ `@tailgrids/core` (Button, Input, Select...) đảm bảo đồng nhất thiết kế với hệ thống lõi.
 
 ## 📦 Công nghệ sử dụng
@@ -15,7 +15,7 @@ Dự án này là hệ thống Public Form chuyên dụng phục vụ việc thu
 - **Framework**: [Next.js](https://nextjs.org/) (App Router, Turbopack)
 - **Styling**: Tailwind CSS
 - **Thư viện UI/Icon**: `react-aria-components`, `sonner`, `lucide-react`
-- **Kết nối Backend**: fetch API với Next.js API Rewrites
+- **Kết nối Backend**: fetch API qua route handler `/api/backend`
 
 ## ⚙️ Cài đặt & Chạy dự án
 
@@ -25,9 +25,9 @@ Dự án này là hệ thống Public Form chuyên dụng phục vụ việc thu
    ```
 
 2. **Cấu hình môi trường**
-   Đảm bảo file `.env` đã được cấu hình trỏ đúng về backend Frappe:
+   Đặt địa chỉ crm-backend (biến phía server, không phải `NEXT_PUBLIC_*`):
    ```env
-   NEXT_PUBLIC_FRAPPE_URL=http://localhost:8001
+   CRM_BACKEND_URL=https://api.faip.pro
    ```
 
 3. **Chạy Server Development**
@@ -48,10 +48,12 @@ src/
 ├── components/
 │   └── tailgrids/core/        # Các UI Components cơ bản (nút, input, select...)
 ├── services/
-│   └── api/lead-mapping/      # Logic gọi API sang Backend Frappe
+│   └── api/lead-mapping/      # Logic gọi crm-backend
 └── utils/                     # Các hàm tiện ích (cn, format...)
 ```
 
 ## ⚠️ Lưu ý về API Proxy
 
-Tất cả các request `fetch` từ client gọi vào đường dẫn `/api/method/...` sẽ được **Next.js tự động chuyển tiếp (Proxy)** sang `NEXT_PUBLIC_FRAPPE_URL/api/method/...` dựa theo cấu hình trong `next.config.ts`. Điều này giúp Frontend nằm chung tên miền ảo với Backend khi gọi API, tránh hoàn toàn lỗi CORS.
+`src/app/api/backend/[...path]/route.ts` chỉ chuyển tiếp các đường dẫn công khai nói trên tới `CRM_BACKEND_URL/api/v1/...` (cùng `Idempotency-Key` và IP người gửi để backend giới hạn tần suất đúng người). Đường dẫn khác trả 404.
+
+Danh sách học sinh trên trang chỉ gồm những đăng ký vừa thực hiện trên thiết bị này: backend không cung cấp danh sách lead công khai.

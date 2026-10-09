@@ -10,7 +10,6 @@ import type { PublicLeadRecord, PublicCampaignRecord } from "@/services/api/lead
 
 export function PublicFormPage({ campaignCode }: { campaignCode?: string }) {
   const [pendingLead, setPendingLead] = useState<PublicLeadRecord | null>(null);
-  const [refreshKey, setRefreshKey] = useState(0);
   const [campaign, setCampaign] = useState<PublicCampaignRecord | null>(null);
   const [loading, setLoading] = useState(true);
   const [isNotFound, setIsNotFound] = useState(false);
@@ -52,7 +51,6 @@ export function PublicFormPage({ campaignCode }: { campaignCode?: string }) {
 
   const handleLeadCreated = useCallback((lead: PublicLeadRecord) => {
     setPendingLead(lead);
-    setRefreshKey((k) => k + 1);
   }, []);
 
   // 1. Loading State
@@ -174,11 +172,7 @@ export function PublicFormPage({ campaignCode }: { campaignCode?: string }) {
 
         {/* Right: Table */}
         <div className="flex-1 min-w-0 w-full">
-          <LeadTable
-            campaignCode={currentCampaignCode}
-            pendingLead={pendingLead}
-            refreshKey={refreshKey}
-          />
+          <LeadTable pendingLead={pendingLead} />
         </div>
       </div>
     </div>

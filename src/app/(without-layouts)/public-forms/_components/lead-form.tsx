@@ -31,9 +31,7 @@ export function LeadForm({ onLeadCreated, campaignCode }: LeadFormProps = {}) {
     ward: "",
     high_school: "",
     major: "",
-    source: "Promoter",
     assignment_priority: "normal",
-    segments: ["Scholarship", "Grade 12"],
   });
 
   const [provinces, setProvinces] = useState<LookupItem[]>([]);
@@ -52,6 +50,7 @@ export function LeadForm({ onLeadCreated, campaignCode }: LeadFormProps = {}) {
       .then(setMajors)
       .catch((err) => {
         console.error("Majors API error:", err);
+        toast.error("Lỗi khi tải danh sách Ngành học.");
       });
   }, []);
 
@@ -116,10 +115,8 @@ export function LeadForm({ onLeadCreated, campaignCode }: LeadFormProps = {}) {
 
     setIsSubmitting(true);
     try {
-      // Omit server-managed fields like lead_status from creation payload
-      const { lead_status, ...payloadFields } = formData;
       const result = await createPublicLead({
-        ...payloadFields,
+        ...formData,
         campaign_code: currentCampaignCode,
       } as CreatePublicLeadPayload);
       toast.success("Đăng ký thành công!");
@@ -135,8 +132,8 @@ export function LeadForm({ onLeadCreated, campaignCode }: LeadFormProps = {}) {
         student_name: formData.student_name || "",
         campaign: currentCampaignCode,
         lead_status: "New",
-        lead_code: result?.lead_code || result?.leadCode || `HS-2026-${Date.now().toString().slice(-6)}`,
-        name: result?.name || result?.lead_code || `HS-2026-${Date.now().toString().slice(-6)}`,
+        lead_code: result.leadCode,
+        name: result.id,
         creation: new Date().toISOString().replace("T", " ").slice(0, 19),
         createdAt: new Date().toISOString(),
         phone: formData.phone,
@@ -157,10 +154,8 @@ export function LeadForm({ onLeadCreated, campaignCode }: LeadFormProps = {}) {
         ward: "",
         high_school: "",
         major: "",
-        source: "Promoter",
-        assignment_priority: "normal",
-        segments: ["Scholarship", "Grade 12"],
-      });
+            assignment_priority: "normal",
+          });
       setWards([]);
       setHighSchools([]);
     } catch (error: unknown) {
