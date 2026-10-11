@@ -157,16 +157,24 @@ export function PublicFormPage({ campaignCode }: { campaignCode?: string }) {
             <p className="mt-1 text-xs sm:text-sm text-text-secondary">
               Chiến dịch: <span className="font-semibold text-orange-600 font-mono">{currentCampaignCode}</span> • Vui lòng để lại thông tin để được tư vấn
             </p>
+            {campaign.campus && <p className="mt-1 text-sm text-text-secondary">Campus: <span className="font-semibold">{campaign.campus}</span></p>}
           </div>
         </div>
       </div>
+
+      {!campaign.campus_id && (
+        <div role="alert" className="max-w-[1750px] mx-auto mb-4 text-sm text-red-600">
+          Chưa xác định được Campus của chiến dịch. Vui lòng tải lại form trước khi đăng ký.
+          <button type="button" onClick={checkCampaign} className="ml-2 underline">Tải lại</button>
+        </div>
+      )}
 
       {/* Side-by-side layout */}
       <div className="flex flex-col lg:flex-row gap-5 items-start w-full max-w-[1750px] mx-auto">
         {/* Left: Form - 460px/480px width gives spacious, non-truncated inputs and clean UI/UX */}
         <div className="w-full lg:w-[460px] xl:w-[480px] shrink-0 pt-0 lg:pt-[56px]">
           <Card className="p-5 sm:p-6 shadow-sm border-card-border bg-background-white sticky top-4">
-            <LeadForm onLeadCreated={handleLeadCreated} campaignCode={currentCampaignCode} />
+            <LeadForm onLeadCreated={handleLeadCreated} campaignCode={currentCampaignCode} campusId={campaign.campus_id} campusName={campaign.campus} />
           </Card>
         </div>
 

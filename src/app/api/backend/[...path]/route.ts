@@ -6,7 +6,7 @@ import { NextRequest, NextResponse } from "next/server";
  * biến môi trường phía server `CRM_BACKEND_URL`.
  */
 const ROUTES: { method: string; pattern: RegExp }[] = [
-  { method: "GET", pattern: /^public\/(provinces|wards|high-schools|majors|campaigns)$/ },
+  { method: "GET", pattern: /^public\/(provinces|wards|high-schools|majors|campuses|campaigns)$/ },
   { method: "POST", pattern: /^leads\/intake$/ },
 ];
 

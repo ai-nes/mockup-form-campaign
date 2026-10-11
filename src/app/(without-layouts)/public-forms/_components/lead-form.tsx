@@ -12,16 +12,18 @@ import {
   getPublicMajors 
 } from "@/services/api/lead-mapping";
 import type { CreatePublicLeadPayload, LookupItem, PublicLeadRecord } from "@/services/api/lead-mapping";
-import { Select, SelectItem, SelectTrigger, SelectValue, SelectIndicator, SelectContent } from "@/components/tailgrids/core/select";
+import { SearchableSelect } from "@/components/common/searchable-select";
 import { Label } from "@/components/tailgrids/core/label";
 
 interface LeadFormProps {
   /** Called after a lead is successfully created, passing the submitted data */
   onLeadCreated?: (lead: PublicLeadRecord) => void;
   campaignCode?: string;
+  campusId?: string;
+  campusName?: string;
 }
 
-export function LeadForm({ onLeadCreated, campaignCode }: LeadFormProps = {}) {
+export function LeadForm({ onLeadCreated, campaignCode, campusId, campusName }: LeadFormProps = {}) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState<Partial<CreatePublicLeadPayload>>({
     student_name: "",
@@ -100,6 +102,10 @@ export function LeadForm({ onLeadCreated, campaignCode }: LeadFormProps = {}) {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!campusId) {
+      toast.error("Chưa xác định được Campus của chiến dịch. Vui lòng tải lại form.");
+      return;
+    }
     if (!formData.student_name || !formData.phone) {
       toast.error("Vui lòng nhập Họ tên và Số điện thoại");
       return;
@@ -118,6 +124,7 @@ export function LeadForm({ onLeadCreated, campaignCode }: LeadFormProps = {}) {
       const result = await createPublicLead({
         ...formData,
         campaign_code: currentCampaignCode,
+        campus_id: campusId,
       } as CreatePublicLeadPayload);
       toast.success("Đăng ký thành công!");
 
@@ -131,6 +138,8 @@ export function LeadForm({ onLeadCreated, campaignCode }: LeadFormProps = {}) {
       const newLead: PublicLeadRecord = {
         student_name: formData.student_name || "",
         campaign: currentCampaignCode,
+        campus_id: campusId,
+        campus: campusName,
         lead_status: "New",
         lead_code: result.leadCode,
         name: result.id,
@@ -226,45 +235,25 @@ export function LeadForm({ onLeadCreated, campaignCode }: LeadFormProps = {}) {
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
         <div className="flex flex-col gap-1.5">
           <Label className="text-xs font-medium text-text-primary">Tỉnh/Thành phố</Label>
-          <Select
-            aria-label="Tỉnh/Thành phố"
+          <SearchableSelect
+            ariaLabel="Tỉnh/Thành phố"
             placeholder="Chọn Tỉnh/Thành phố"
+            options={provinces}
             value={formData.province || ""}
-            onChange={(key) => handleSelectChange("province", key as string)}
-          >
-            <SelectTrigger>
-              <SelectValue />
-              <SelectIndicator />
-            </SelectTrigger>
-            <SelectContent>
-              {provinces.map((p) => (
-                <SelectItem key={p.value} id={p.value} textValue={p.label}>
-                  {p.label}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
+            onChange={(key) => handleSelectChange("province", key)}
+          />
         </div>
         <div className="flex flex-col gap-1.5">
           <Label className="text-xs font-medium text-text-primary">Xã/Phường/Quận/Huyện</Label>
-          <Select
-            aria-label="Xã Phường Quận Huyện"
+          <SearchableSelect
+            key={formData.province || "no-province"}
+            ariaLabel="Xã Phường Quận Huyện"
             placeholder="Chọn Quận/Huyện"
+            options={wards}
+            isDisabled={!formData.province}
             value={formData.ward || ""}
-            onChange={(key) => handleSelectChange("ward", key as string)}
-          >
-            <SelectTrigger>
-              <SelectValue />
-              <SelectIndicator />
-            </SelectTrigger>
-            <SelectContent>
-              {wards.map((w) => (
-                <SelectItem key={w.value} id={w.value} textValue={w.label}>
-                  {w.label}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
+            onChange={(key) => handleSelectChange("ward", key)}
+          />
         </div>
       </div>
 
@@ -272,51 +261,34 @@ export function LeadForm({ onLeadCreated, campaignCode }: LeadFormProps = {}) {
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
         <div className="flex flex-col gap-1.5">
           <Label className="text-xs font-medium text-text-primary">Trường THPT</Label>
-          <Select
-            aria-label="Trường THPT"
+          <SearchableSelect
+            key={formData.ward || "no-ward"}
+            ariaLabel="Trường THPT"
             placeholder="Chọn Trường THPT"
+            options={highSchools}
+            isDisabled={!formData.ward}
             value={formData.high_school || ""}
-            onChange={(key) => handleSelectChange("high_school", key as string)}
-          >
-            <SelectTrigger>
-              <SelectValue />
-              <SelectIndicator />
-            </SelectTrigger>
-            <SelectContent>
-              {highSchools.map((hs) => (
-                <SelectItem key={hs.value} id={hs.value} textValue={hs.label}>
-                  {hs.label}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
+            onChange={(key) => handleSelectChange("high_school", key)}
+          />
         </div>
         <div className="flex flex-col gap-1.5">
           <Label className="text-xs font-medium text-text-primary">Ngành quan tâm</Label>
-          <Select
-            aria-label="Ngành học quan tâm"
+          <SearchableSelect
+            ariaLabel="Ngành học quan tâm"
             placeholder="Chọn Ngành học"
+            options={majors.map((major) => ({ ...major, groupLabel: major.major_group }))}
+            isGrouped
+            searchPlaceholder="Tìm ngành hoặc nhóm ngành..."
             value={formData.major || ""}
-            onChange={(key) => handleSelectChange("major", key as string)}
-          >
-            <SelectTrigger>
-              <SelectValue />
-              <SelectIndicator />
-            </SelectTrigger>
-            <SelectContent>
-              {majors.map((m) => (
-                <SelectItem key={m.value} id={m.value} textValue={m.label}>
-                  {m.label}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
+            onChange={(key) => handleSelectChange("major", key)}
+          />
         </div>
       </div>
 
       {/* Submit Button */}
       <Button
         type="submit"
+        isDisabled={!campusId || isSubmitting}
         isLoading={isSubmitting}
         className="w-full mt-2 font-semibold shadow-sm transition-all hover:opacity-95"
       >

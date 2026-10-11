@@ -7,6 +7,7 @@ export interface RequestOptions {
 export interface CreatePublicLeadPayload {
   student_name: string;
   campaign_code: string;
+  campus_id?: string;
   phone?: string;
   email?: string;
   province?: string;
@@ -36,10 +37,13 @@ export interface LookupItem {
   value: string;
   label: string;
   code?: string | null;
+  major_group?: string | null;
   [key: string]: unknown;
 }
 
 export interface PublicLeadRecord {
+  campus?: string;
+  campus_id?: string;
   name?: string;
   lead_code?: string;
   student_name?: string;
@@ -57,6 +61,7 @@ export interface PublicLeadRecord {
 }
 
 export interface PublicCampaignRecord {
+  campus_id?: string;
   name: string;
   stable_code?: string | null;
   code?: string | null;

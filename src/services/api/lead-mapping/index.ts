@@ -55,6 +55,7 @@ export async function createPublicLead(
   const fields = {
     studentName: payload.student_name,
     campaignCode: payload.campaign_code,
+    campusId: payload.campus_id || undefined,
     phone: payload.phone,
     email: payload.email || undefined,
     provinceId: payload.province || undefined,
@@ -105,6 +106,10 @@ export function getPublicMajors(options: RequestOptions = {}): Promise<LookupIte
   return getItems<LookupItem>("public/majors", options);
 }
 
+export function getPublicCampuses(options: RequestOptions = {}): Promise<LookupItem[]> {
+  return getItems<LookupItem>("public/campuses", options);
+}
+
 /** Chiến dịch đang chạy; có `campaignCode` thì chỉ trả đúng chiến dịch đó. */
 export async function getPublicCampaigns(
   campaignCode?: string,
@@ -118,6 +123,8 @@ export async function getPublicCampaigns(
     stable_code: (item.code as string | null) ?? null,
     title: item.title as string | undefined,
     status: item.status as string | undefined,
+    campus_id: item.campus_id as string | undefined,
+    campus: item.campus as string | undefined,
     start_date: item.start_date as string | null | undefined,
     end_date: item.end_date as string | null | undefined,
     utm_campaign: item.utm_campaign as string | null | undefined,

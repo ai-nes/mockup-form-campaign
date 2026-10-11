@@ -3,22 +3,31 @@
 import Link from "next/link";
 import { useEffect, useState, useCallback, useMemo } from "react";
 import { ChevronRight } from "@tailgrids/icons";
-import { getPublicCampaigns } from "@/services/api/lead-mapping";
-import type { PublicCampaignRecord } from "@/services/api/lead-mapping";
+import { getPublicCampaigns, getPublicCampuses } from "@/services/api/lead-mapping";
+import type { LookupItem, PublicCampaignRecord } from "@/services/api/lead-mapping";
 import { Badge } from "@/components/tailgrids/core/badge";
+import { SearchableSelect } from "@/components/common/searchable-select";
 
 export default function PublicFormsSelectorPage() {
   const [campaigns, setCampaigns] = useState<PublicCampaignRecord[]>([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
+  const [campuses, setCampuses] = useState<LookupItem[]>([]);
+  const [campusId, setCampusId] = useState("");
+  const [loadError, setLoadError] = useState<string | null>(null);
 
   const fetchCampaigns = useCallback(async () => {
     setLoading(true);
+    setLoadError(null);
     try {
-      const data = await getPublicCampaigns();
+      const [data, campusOptions] = await Promise.all([getPublicCampaigns(), getPublicCampuses()]);
       setCampaigns(data || []);
-    } catch {
+      setCampuses(campusOptions);
+      setCampusId((current) => campusOptions.some((item) => item.value === current) ? current : "");
+    } catch (error) {
       setCampaigns([]);
+      setCampuses([]);
+      setLoadError(error instanceof Error ? error.message : "Không thể tải danh sách Campus và chiến dịch.");
     } finally {
       setLoading(false);
     }
@@ -29,15 +38,15 @@ export default function PublicFormsSelectorPage() {
   }, [fetchCampaigns]);
 
   const filteredCampaigns = useMemo(() => {
-    if (!search) return campaigns;
     const lower = search.toLowerCase();
     return campaigns.filter(
       (c) =>
-        c.name?.toLowerCase().includes(lower) ||
-        c.stable_code?.toLowerCase().includes(lower) ||
-        c.title?.toLowerCase().includes(lower)
+        (!campusId || c.campus_id === campusId) &&
+        (!lower || c.name?.toLowerCase().includes(lower) ||
+          c.stable_code?.toLowerCase().includes(lower) ||
+          c.title?.toLowerCase().includes(lower))
     );
-  }, [campaigns, search]);
+  }, [campaigns, search, campusId]);
 
   return (
     <div className="h-full w-full overflow-y-auto bg-background-gray-primary py-12 px-4 flex justify-center">
@@ -50,7 +59,7 @@ export default function PublicFormsSelectorPage() {
         </div>
 
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
-          <div className="relative w-full sm:w-[400px]">
+          <div className="relative w-full min-w-0 sm:flex-1">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="absolute left-3.5 top-1/2 -translate-y-1/2 text-text-tertiary">
               <circle cx="11" cy="11" r="8"></circle>
               <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
@@ -63,11 +72,22 @@ export default function PublicFormsSelectorPage() {
               className="w-full pl-10 pr-4 py-2.5 text-[13px] border border-card-border rounded-xl outline-none focus:border-primary-500 focus:ring-4 focus:ring-primary-500/10 transition-all shadow-sm"
             />
           </div>
-          
+
+          <SearchableSelect
+            ariaLabel="Campus"
+            placeholder="Tất cả Campus"
+            options={[{ value: "all", label: "Tất cả Campus" }, ...campuses]}
+            value={campusId || "all"}
+            onChange={(key) => setCampusId(key === "all" ? "" : key)}
+            isDisabled={loading || Boolean(loadError)}
+            className="w-full sm:w-60 sm:shrink-0"
+            triggerClassName="h-11 rounded-xl"
+          />
+
           <button
             onClick={fetchCampaigns}
             disabled={loading}
-            className="flex items-center gap-2 px-4 py-2.5 text-[13px] font-semibold text-text-secondary bg-white border border-card-border rounded-xl hover:text-text-primary hover:bg-gray-50 transition-colors shadow-sm disabled:opacity-50"
+            className="flex shrink-0 items-center gap-2 px-4 py-2.5 text-[13px] font-semibold text-text-secondary bg-white border border-card-border rounded-xl hover:text-text-primary hover:bg-gray-50 transition-colors shadow-sm disabled:opacity-50"
           >
             <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={loading ? "animate-spin" : ""}>
               <path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8" />
@@ -78,6 +98,8 @@ export default function PublicFormsSelectorPage() {
             Làm mới
           </button>
         </div>
+
+        {loadError && <p role="alert" className="text-sm text-red-600">{loadError}</p>}
 
         {loading ? (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -110,19 +132,20 @@ export default function PublicFormsSelectorPage() {
               </svg>
             </div>
             <h3 className="text-[17px] font-bold text-text-primary mb-1.5">
-              {search ? "Không tìm thấy chiến dịch phù hợp" : "Hiện chưa có form tuyển sinh nào"}
+              {search || campusId ? "Không tìm thấy chiến dịch phù hợp" : "Hiện chưa có form tuyển sinh nào"}
             </h3>
             <p className="text-[13px] text-text-secondary max-w-md mb-6 leading-relaxed">
               {search
                 ? `Không có kết quả nào khớp với từ khóa "${search}". Vui lòng thử tìm kiếm với từ khóa khác.`
+                : campusId ? "Campus đã chọn hiện chưa có chiến dịch đang mở đăng ký."
                 : "Hệ thống CRM hiện chưa có chiến dịch nào đang mở nhận đăng ký hoặc máy chủ chưa sẵn sàng dữ liệu."}
             </p>
-            {search ? (
+            {search || campusId ? (
               <button
-                onClick={() => setSearch("")}
+                onClick={() => { setSearch(""); setCampusId(""); }}
                 className="inline-flex items-center gap-2 px-4 py-2 text-xs font-semibold text-text-secondary bg-background-gray-primary rounded-lg hover:text-text-primary transition-colors"
               >
-                Xóa bộ lọc tìm kiếm
+                Xóa bộ lọc
               </button>
             ) : (
               <button
